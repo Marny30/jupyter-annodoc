@@ -2,23 +2,28 @@ Tired of reading dependency structures as text in your jupyter
 notebook?  This jupyter notebook extension visualizes NLP output using
 brat[^1], encapsuled by annodoc[^2].
 
-Installation:
- * clone this repository
- * run `jupyter-nbextension install jupyter-annodoc`, add `--user` or `--symlink` if you like
- * run `jupyter-nbextension enable jupyter-annodoc`
- 
-Open a jupyter notebook with a conll-x string as output, select that
-cell and click on the new jupyter-annodoc icon to convert the output.
+## Installation
+```sh
+git clone --recurse-submodules https://github.com/Marny30/jupyter-annodoc
+jupyter nbextension install jupyter-annodoc --user
+jupyter nbextension enable jupyter-annodoc
+```
 
-This plugin tries to be smart about the output you provide.  If the
-output is enclosed in quotes it assumes jupyter shows a variables's
-content and will unescape the output.  Otherwise it will use the
-output as-is.
+## How to use
+Example input (see [^2] for more examples)
+```txt
+~~~ ann
+Barack Obama is the current president.
+T1 PERSON 0 12 Barack Obama
+~~~
+```
+Output the above string and clic on the button provided by this extension to convert into a brat visualization.
 
-Currently, conll-x format is hardcoded.  Patches welcome for automatic
-or manual selection of the right backend!
+----
 
-If you use it, drop me a short mail for motivation :-)
+This fork implements the support of all types (ann, conllu, conllx, sdparse) provided by Annodoc. Because of current annodoc's restriction, only single-lined inputs are accepted except for sdparse. All credits do to its author. 
+
+
 
 [^1]: http://brat.nlplab.org/
 [^2]: http://spyysalo.github.io/annodoc/
