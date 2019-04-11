@@ -54,25 +54,43 @@ define([
 		}
 		loadCss("/nbextensions/jupyter-annodoc/annodoc/css/style-vis.css")
 	
-		var visualizeConll = function(elem) {
-			var element = $(elem)
-			var parseFunction = Annodoc.parseFunctionMap[".conllx-parse"],
+		var visualize = function(elem) {
+
+		
+		var annot_type = elem.textContent.split("\n")[0].split(/~~~ (.*)/).filter(i=>i)[0];
+	
+		let parseType = {
+			'ann': '.ann-annotation',
+			'conllx' : '.conllx-parse',
+			'sdparse' : '.sdparse',
+			'conllu' : '.conllu',
+		}
+		var element = $(elem);
+		var parseFunction = Annodoc.parseFunctionMap[parseType[annot_type]],
 				cdataCopy = jQuery.extend(true, {}, Config.bratCollData);
             // hide to minimize "jumping" on draw
             // (https://github.com/spyysalo/annodoc/issues/11)
-			element.hide();
-			Annodoc.embedAnnotation(element, parseFunction, cdataCopy);  
+		element.hide();
+		var lines = element[0].textContent.trim().split("\n");
+		lines = lines.slice(1, lines.length-1);
+		element[0].textContent = lines.join("\n");
+		Annodoc.embedAnnotation(element, parseFunction, cdataCopy);
 		}
 
 		var visualizeCurrentCell = function() {
 			var cell = Jupyter.notebook.get_cell(Jupyter.notebook.index_or_selected())
 			var output = cell.output_area.element.find("pre")[0]
 			// check if the output is an escaped string representation
-			if (output.textContent.startsWith("'") || output.textContent.startsWith("'")) {
+			
+                        var text = output.textContent
+			if (text.startsWith("'")) {
 				// parse the representation into a string to replace \t etc.
 				output.textContent = JSON.parse('"' + output.textContent.slice(1,-1) + '"')
 			}
-			visualizeConll(output)
+
+
+
+			visualize(output)
 		}
 
         var action = {
