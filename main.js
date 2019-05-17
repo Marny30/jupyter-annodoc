@@ -61,6 +61,7 @@ define([
 	
 		let parseType = {
 			'ann': '.ann-annotation',
+			'ann-multiline': '.ann-annotation-multiline',
 			'conllx' : '.conllx-parse',
 			'sdparse' : '.sdparse',
 			'conllu' : '.conllu',
